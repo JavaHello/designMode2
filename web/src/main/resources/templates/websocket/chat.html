@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>添加用户</title>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+</head>
+<body>
+	<div class="row">
+		<div class="h1 col-sm-4 col-xs-offset-2">聊天室</div>
+	</div>
+</body>
+<script>
+    var chat = {};
+    chat.userId = prompt("请输入你的Name:","test1");
+    chat.host = 'localhost';
+    chat.port = '8082';
+    chat.url = 'ws://' + chat.host +':' + chat.port + '/websocket/message/' + chat.userId;
+
+    if (!window.WebSocket) {
+        window.WebSocket = window.MozWebSocket; // 如果浏览器不支持 WebSocket，那就使用 MozWebSocket
+    }
+    if (window.WebSocket) {
+        chat.socket = new WebSocket(chat.url); // 打开一个新的连接
+        chat.socket.onmessage = function(event) { // 收到信息的回调函数
+            console.log('收到信息：' + event.data);
+            document.getElementById('responseText').value = document.getElementById('responseText').value + '\n' + event.data; // 获取到消息就把其显示出来
+            document.getElementById('showDate').innerHtml += '\n' + event.data
+        };
+        chat.socket.onopen = function(event) { // 连接打开的回调函数
+            console.log('连接开启！');
+        };
+        chat.socket.onclose = function(event) { // 连接关闭的函数函数
+            console.log('连接关闭！');
+        };
+    } else {
+        alert('你的浏览器不支持 WebSocket！');
+    }
+
+    chat.send = function send(message) {
+        var socket = this.socket;
+        if (!window.WebSocket) { // 若不支持 WebSocket，不执行发送操作
+            return;
+        }
+        if (socket.readyState === WebSocket.OPEN) { // 如果连接已打开，执行发送操作
+            socket.send(message);
+        } else {
+            alert('连接没有开启.');
+        }
+    }
+</script>
+</html>
