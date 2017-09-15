@@ -1,5 +1,6 @@
 server:
     port: 8082
+    context-path: /boot
 spring:
     datasource:
         name: mydb
@@ -30,14 +31,17 @@ spring:
         mode: HTML5
     freemarker:
       charset: UTF-8
+    #session共享基于redis
+    session:
+      store-type: redis
+    activemq:
+      broker-url: tcp://127.0.0.1:61616
+      user: admin
+      password: 12356
 mybatis:
     mapper-locations: classpath:mappers/**/*Mapper.xml
     type-aliases-package: org.lk.springboot.demo.domain.model
-    configuration:
-        map-underscore-to-camel-case: true
-        default-fetch-size: 50
-        default-statement-timeout: 10
-        auto-mapping-unknown-column-behavior: WARNING
+    config-location: classpath:mybatis-config.xml
 pagehelper:
   auto-dialect: true
   reasonable: true
