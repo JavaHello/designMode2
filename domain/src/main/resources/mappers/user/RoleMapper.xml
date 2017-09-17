@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.lk.springboot.demo.domain.mapper.user.RoleMapper" >
+  <resultMap id="BaseResultMap" type="org.lk.springboot.demo.domain.model.user.Role" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="VERSION" property="version" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="RE_NAME" property="reName" jdbcType="VARCHAR" />
+    <result column="RE_CODE" property="reCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, VERSION, CREATE_TIME, RE_NAME, RE_CODE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="org.lk.springboot.demo.domain.model.user.Role" >
+    insert into role (ID, VERSION, CREATE_TIME, 
+      RE_NAME, RE_CODE)
+    values (#{id,jdbcType=BIGINT}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{reName,jdbcType=VARCHAR}, #{reCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.lk.springboot.demo.domain.model.user.Role" >
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="reName != null" >
+        RE_NAME,
+      </if>
+      <if test="reCode != null" >
+        RE_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reName != null" >
+        #{reName,jdbcType=VARCHAR},
+      </if>
+      <if test="reCode != null" >
+        #{reCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.lk.springboot.demo.domain.model.user.Role" >
+    update role
+    <set >
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reName != null" >
+        RE_NAME = #{reName,jdbcType=VARCHAR},
+      </if>
+      <if test="reCode != null" >
+        RE_CODE = #{reCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.lk.springboot.demo.domain.model.user.Role" >
+    update role
+    set VERSION = #{version,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      RE_NAME = #{reName,jdbcType=VARCHAR},
+      RE_CODE = #{reCode,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="RE_Column_List" >
+    RE.ID, RE.VERSION, RE.CREATE_TIME, RE.RE_NAME, RE.RE_CODE
+  </sql>
+  <select id="findByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	SELECT  
+  	  <include refid="RE_Column_List"/>
+  	FROM ROLE RE LEFT JOIN USER_AND_ROLE UR ON RE.ID = UR.ROLE_ID
+	WHERE UR.USER_ID = #{id}
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role
+  </select>
+</mapper>

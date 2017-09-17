@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.lk.springboot.demo.domain.mapper.user.PermissionsMapper" >
+  <resultMap id="BaseResultMap" type="org.lk.springboot.demo.domain.model.user.Permissions" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="VERSION" property="version" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PM_NAME" property="pmName" jdbcType="VARCHAR" />
+    <result column="PM_CODE" property="pmCode" jdbcType="VARCHAR" />
+    <result column="PM_DESC" property="pmDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, VERSION, CREATE_TIME, PM_NAME, PM_CODE, PM_DESC
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from permissions
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from permissions
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="org.lk.springboot.demo.domain.model.user.Permissions" >
+    insert into permissions (ID, VERSION, CREATE_TIME, 
+      PM_NAME, PM_CODE, PM_DESC
+      )
+    values (#{id,jdbcType=BIGINT}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{pmName,jdbcType=VARCHAR}, #{pmCode,jdbcType=VARCHAR}, #{pmDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.lk.springboot.demo.domain.model.user.Permissions" >
+    insert into permissions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="pmName != null" >
+        PM_NAME,
+      </if>
+      <if test="pmCode != null" >
+        PM_CODE,
+      </if>
+      <if test="pmDesc != null" >
+        PM_DESC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmName != null" >
+        #{pmName,jdbcType=VARCHAR},
+      </if>
+      <if test="pmCode != null" >
+        #{pmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pmDesc != null" >
+        #{pmDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.lk.springboot.demo.domain.model.user.Permissions" >
+    update permissions
+    <set >
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmName != null" >
+        PM_NAME = #{pmName,jdbcType=VARCHAR},
+      </if>
+      <if test="pmCode != null" >
+        PM_CODE = #{pmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pmDesc != null" >
+        PM_DESC = #{pmDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.lk.springboot.demo.domain.model.user.Permissions" >
+    update permissions
+    set VERSION = #{version,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      PM_NAME = #{pmName,jdbcType=VARCHAR},
+      PM_CODE = #{pmCode,jdbcType=VARCHAR},
+      PM_DESC = #{pmDesc,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <sql id="PM_Column_List" >
+    PM.ID, PM.VERSION, PM.CREATE_TIME, PM.PM_NAME, PM.PM_CODE, PM.PM_DESC
+  </sql>
+  <select id="findByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	SELECT 
+		<include refid="PM_Column_List"/>
+	FROM PERMISSIONS PM LEFT JOIN ROLE_AND_PERMISSIONS RP ON PM.ID = RP.PM_ID
+	LEFT JOIN ROLE RE ON RP.ROLE_ID = RE.ID
+	WHERE RE.ID IN (
+	  SELECT ROLE_ID FROM USER_AND_ROLE WHERE USER_ID = #{id}
+	)
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from permissions
+  </select>
+</mapper>
