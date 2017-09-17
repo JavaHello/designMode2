@@ -8,16 +8,31 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 
 @Controller
 @SpringBootApplication
+@EnableRedisHttpSession
 public class Application {
+	@RequestMapping(value="/getSessionId")
+	@ResponseBody
+	public String getSessionId(HttpServletRequest request){
 
+		Object o = request.getSession().getAttribute("springboot");
+		if(o == null){
+			o = "spring boot 牛逼了!!!有端口"+request.getLocalPort()+"生成";
+			request.getSession().setAttribute("springboot", o);
+		}
+
+		return "端口=" + request.getLocalPort() +  " sessionId=" + request.getSession().getId() +"<br/>"+o;
+	}
 	@RequestMapping("/")
 	String home(Model model) {
 		model.addAttribute("welcome", "hello world");

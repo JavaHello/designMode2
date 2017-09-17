@@ -5,7 +5,6 @@ import org.lk.springboot.demo.BaseApiControllerTest;
 import org.lk.springboot.demo.domain.model.user.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.annotation.Rollback;
 
 
 public class UserControllerTest extends BaseApiControllerTest {
@@ -14,6 +13,7 @@ public class UserControllerTest extends BaseApiControllerTest {
     private final static String reqUrl = "/v1/user/";
     @Test
     public void testList() throws Exception {
+    	logger.debug("");
         UserInfo userInfo = new UserInfo();
         userInfo.setUsername("");
         userInfo.setNickname("");

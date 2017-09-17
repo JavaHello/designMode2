@@ -1,13 +1,16 @@
 package org.lk.springboot.demo.domain.model.user;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import org.hibernate.validator.constraints.Email;
-import org.lk.springboot.demo.domain.base.AuditedModel;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Date;
+
+import org.hibernate.validator.constraints.Email;
+import org.lk.springboot.demo.domain.base.AuditedModel;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class UserInfo extends AuditedModel implements Serializable {
 
@@ -38,10 +41,39 @@ public class UserInfo extends AuditedModel implements Serializable {
     private String district;
 
     private String address;
+    
+    //@JSONField(serialize = false)
+    private List<Role> roles;
+    //@JSONField(serialize = false)
+    private List<Permissions> permissions;
 
     private static final long serialVersionUID = 1L;
 
-    @Override
+    public UserInfo() {
+	}
+
+	public UserInfo(UserInfo userInfo) {
+    	this.username = userInfo.username;
+		this.nickname = userInfo.nickname;
+		this.upassword = userInfo.upassword;
+		this.salt = userInfo.salt;
+		this.gender = userInfo.gender;
+		this.job = userInfo.job;
+		this.email = userInfo.email;
+		this.province = userInfo.province;
+		this.city = userInfo.city;
+		this.district = userInfo.district;
+		this.address = userInfo.address;
+		this.roles = userInfo.roles;
+		this.permissions = userInfo.permissions;
+	}
+    
+    
+
+
+
+
+	@Override
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getCreateTime() {
         return super.getCreateTime();
@@ -139,8 +171,27 @@ public class UserInfo extends AuditedModel implements Serializable {
     public String getChaos(){
         return this.username + this.id;
     }
+    
+    
 
-    @Override
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+
+	public List<Permissions> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permissions> permissions) {
+		this.permissions = permissions;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());

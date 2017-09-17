@@ -2,21 +2,25 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>domain</artifactId>
+	<groupId>org.lk</groupId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<parent>
-		<groupId>org.lk.springboot.demo</groupId>
+		<groupId>org.lk</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
+		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.5.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

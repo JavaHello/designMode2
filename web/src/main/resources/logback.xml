@@ -83,9 +83,17 @@
         </triggeringPolicy>
     </appender>
 
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
+        <destination>192.168.0.106:4736</destination>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname":"web"}</customFields>
+        </encoder>
+    </appender>
+
     <!-- 日志输出级别 -->
 
     <root level="DEBUG">
+        <appender-ref ref="logstash"/>
         <appender-ref ref="STDOUT" />
         <appender-ref ref="DAYERROR" />
         <appender-ref ref="DAYINFO" />

@@ -19,6 +19,11 @@
         <result column="city" property="city" jdbcType="VARCHAR"/>
         <result column="district" property="district" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
+        
+        <collection property="roles" column="id" javaType="java.util.List" 
+        select="org.lk.springboot.demo.domain.mapper.user.RoleMapper.findByUserId"></collection>
+        <collection property="permissions" column="id" javaType="java.util.List" 
+        select="org.lk.springboot.demo.domain.mapper.user.PermissionsMapper.findByUserId"></collection>
     </resultMap>
     <sql id="Base_Column_List">
     id, version, create_time, create_user_id, last_update_time, last_update_user_id,

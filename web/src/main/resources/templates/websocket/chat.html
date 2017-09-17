@@ -1,56 +1,70 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
-<title>添加用户</title>
-<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<meta charset="UTF-8" />
+	<title>Spring Boot+WebSocket+广播式</title>
+	<script th:src="@{/js/jquery-3.2.1.js}"></script>
+	<script th:src="@{/js/sockjs.js}"></script>
+	<script th:src="@{/js/stomp.js}"></script>
 </head>
-<body>
-	<div class="row">
-		<div class="h1 col-sm-4 col-xs-offset-2">聊天室</div>
+<body onload="disconnect()">
+<noscript><h2 style="color: #ff0000">貌似你的浏览器不支持websocket</h2></noscript>
+<div>
+	<div>
+		<button id="connect" onclick="connect();">连接</button>
+		<button id="disconnect" disabled="disabled" onclick="disconnect();">断开连接</button>
 	</div>
-</body>
-<script>
-    var chat = {};
-    chat.userId = prompt("请输入你的Name:","test1");
-    chat.host = 'localhost';
-    chat.port = '8082';
-    chat.url = 'ws://' + chat.host +':' + chat.port + '/websocket/message/' + chat.userId;
+	<div id="conversationDiv">
+		<label>输入你的名字</label><input type="text" id="name" />
+		<button id="sendName" onclick="sendName();">发送</button>
+		<p id="response"></p>
+	</div>
+</div>
 
-    if (!window.WebSocket) {
-        window.WebSocket = window.MozWebSocket; // 如果浏览器不支持 WebSocket，那就使用 MozWebSocket
-    }
-    if (window.WebSocket) {
-        chat.socket = new WebSocket(chat.url); // 打开一个新的连接
-        chat.socket.onmessage = function(event) { // 收到信息的回调函数
-            console.log('收到信息：' + event.data);
-            document.getElementById('responseText').value = document.getElementById('responseText').value + '\n' + event.data; // 获取到消息就把其显示出来
-            document.getElementById('showDate').innerHtml += '\n' + event.data
-        };
-        chat.socket.onopen = function(event) { // 连接打开的回调函数
-            console.log('连接开启！');
-        };
-        chat.socket.onclose = function(event) { // 连接关闭的函数函数
-            console.log('连接关闭！');
-        };
-    } else {
-        alert('你的浏览器不支持 WebSocket！');
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var stompClient = null;
+
+    function setConnected(connected) {
+        document.getElementById('connect').disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+        $('#response').html();
     }
 
-    chat.send = function send(message) {
-        var socket = this.socket;
-        if (!window.WebSocket) { // 若不支持 WebSocket，不执行发送操作
-            return;
-        }
-        if (socket.readyState === WebSocket.OPEN) { // 如果连接已打开，执行发送操作
-            socket.send(message);
-        } else {
-            alert('连接没有开启.');
-        }
+    function connect() {
+        var socket = new SockJS('/boot/webServer'); //1
+        stompClient = Stomp.over(socket);//2
+        stompClient.connect({}, function(frame) {//3
+            setConnected(true);
+            console.log('开始进行连接Connected: ' + frame);
+
+            stompClient.subscribe('/topic/' + [[${user.username}]] + '/subscribe', function (respnose) { //4
+                showResponse(JSON.parse(respnose.body).message);
+            });
+
+        });
     }
+
+
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendName() {
+        var name = $('#name').val();
+        stompClient.send("/welcome", {priority: 9}, JSON.stringify({ 'name': name }));//5
+    }
+
+    function showResponse(message) {
+        var response = $("#response");
+        response.html(message);
+    }
+    /*]]>*/
 </script>
+</body>
 </html>

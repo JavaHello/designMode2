@@ -5,6 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1 th:text="${welcome}"></h1>
+<h1 th:text="'Hello'"></h1>
+<form th:action="@{/logout}" th:method="'POST'">
+    <button class="btn btn-danger btn-sm btn-block" th:type="'submit'">退出</button>
+</form>
 </body>
 </html>
