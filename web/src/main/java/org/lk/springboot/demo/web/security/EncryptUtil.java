@@ -15,10 +15,4 @@ public class EncryptUtil {
    public static boolean match(CharSequence rawPassword, String password) {
         return encoder.matches(rawPassword, password);  
    }
-
-    public static void main(String[] args) {
-        String encrypt = encrypt("121121");
-        System.out.println(encrypt);
-        System.out.println(match("121121", encrypt));
-    }
 }  
