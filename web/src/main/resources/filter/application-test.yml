@@ -4,7 +4,7 @@ spring:
     datasource:
         name: mydb
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://localhost:3306/openfree?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://192.168.0.104:3306/openfree?useUnicode=true&characterEncoding=utf8
         username: mysql_dba
         password: MySql_DBA.110
         driver-class-name: com.mysql.jdbc.Driver
@@ -18,7 +18,7 @@ spring:
         testOnBorrow: false
         testOnReturn: false
     redis:
-        host: localhost
+        host: 192.168.0.104
         port: 6379
         timeout: 0
         pool:
