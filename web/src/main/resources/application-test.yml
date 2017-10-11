@@ -1,6 +1,5 @@
 server:
-    port: 8082
-    context-path: /boot
+    port: 8083
 spring:
     datasource:
         name: mydb
@@ -18,27 +17,18 @@ spring:
         testWhileIdle: true
         testOnBorrow: false
         testOnReturn: false
-    redis:
-        host: 192.168.0.104
-        port: 6379
-        timeout: 0
-        pool:
-            max-active: 8
-            max-idle: 8
-            max-wait: -1
-            min-idle: 0
     thymeleaf:
         mode: HTML5
     freemarker:
       charset: UTF-8
-    activemq:
-      broker-url: tcp://192.168.0.104:61616
-      user: admin
-      password: 12356
 mybatis:
     mapper-locations: classpath:mappers/**/*Mapper.xml
     type-aliases-package: org.lk.springboot.demo.domain.model
-    config-location: classpath:mybatis-config.xml
+    configuration:
+        map-underscore-to-camel-case: true
+        default-fetch-size: 50
+        default-statement-timeout: 10
+        auto-mapping-unknown-column-behavior: WARNING
 pagehelper:
   auto-dialect: true
   reasonable: true

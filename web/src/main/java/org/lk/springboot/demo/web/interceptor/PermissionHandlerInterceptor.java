@@ -1,27 +1,20 @@
 package org.lk.springboot.demo.web.interceptor;
 
-import java.lang.annotation.Annotation;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sun.javafx.tk.PermissionHelper;
 import org.lk.springboot.demo.domain.model.user.Permissions;
-import org.lk.springboot.demo.domain.model.user.UserInfo;
 import org.lk.springboot.demo.exception.ApiException;
 import org.lk.springboot.demo.exception.ErrorCodeEnum;
 import org.lk.springboot.demo.web.security.MyUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+
 public class PermissionHandlerInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private PermissionHelper permissionHelper;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

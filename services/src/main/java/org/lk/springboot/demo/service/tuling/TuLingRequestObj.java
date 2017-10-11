@@ -1,8 +1,8 @@
 package org.lk.springboot.demo.service.tuling;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class TuLingRequestObj {
 

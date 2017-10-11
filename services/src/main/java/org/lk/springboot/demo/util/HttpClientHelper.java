@@ -1,6 +1,13 @@
 package org.lk.springboot.demo.util;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,15 +24,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.lk.springboot.demo.service.baidu.BaiduMapConfig;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Component
 public class HttpClientHelper {

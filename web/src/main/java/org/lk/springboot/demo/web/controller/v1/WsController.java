@@ -1,6 +1,5 @@
 package org.lk.springboot.demo.web.controller.v1;
 
-import org.lk.springboot.demo.web.security.MyUserDetails;
 import org.lk.springboot.demo.web.util.ResponseMessage;
 import org.lk.springboot.demo.web.websocket.SocketReqMsg;
 import org.lk.springboot.demo.web.websocket.SocketRespMsg;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.context.SecurityContextHolder;
